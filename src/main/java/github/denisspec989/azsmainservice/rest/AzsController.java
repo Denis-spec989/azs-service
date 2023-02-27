@@ -14,9 +14,5 @@ import java.util.List;
 @RequestMapping("/api/v1/azs")
 @RequiredArgsConstructor
 public class AzsController {
-    private final FileServiceRepository fileServiceRepository;
-    @PostMapping(value = "/json")
-    List<PetrolStationDto> getJsonData(@RequestParam("fileName") String fileName){
-        return fileServiceRepository.getJsonData(fileName);
-    }
+
 }
