@@ -26,7 +26,7 @@ public class AzsMainServiceImpl implements AzsMainService {
             azs.setAzsId_company(petrolStationDto.getAzsId());
             azs.setLatitude(petrolStationDto.getLatitude());
             azs.setLongitude(petrolStationDto.getLongitude());
-            azs.setTelephone(petrolStationDto.getTelephone());
+            azs.setTelephone(petrolStationDto.getTelephone()!=null? petrolStationDto.getTelephone().equals("")? null: petrolStationDto.getTelephone() : null);
             azs.setAzsName(petrolStationDto.getAzsName());
             azs.setAzsAddress(petrolStationDto.getAzsAddress());
             azsList.add(azs);
@@ -38,7 +38,16 @@ public class AzsMainServiceImpl implements AzsMainService {
     @Transactional
     public void scheduledGetNewAises() {
         System.out.println("start scheduling");
-        azsRepository.saveAll(fromPetrolStationDtoListToAzsEntityList(fileServiceRepository.getJsonData("Azs_with_prices_and_services")));
-        System.out.println("end saving");
+        List<Azs> savingList = fromPetrolStationDtoListToAzsEntityList(fileServiceRepository.getJsonData("Azs_with_prices_and_services"));
+        System.out.println(savingList.size());
+        List<Azs> xmlList = fromPetrolStationDtoListToAzsEntityList(fileServiceRepository.getXmlData("Azs_with_prices_and_services"));
+        for(Azs azs:xmlList){
+            if(savingList.contains(azs)){
+                continue;
+            }else {
+                savingList.add(azs);
+            }
+        }
+        azsRepository.saveAll(savingList);
     }
 }
