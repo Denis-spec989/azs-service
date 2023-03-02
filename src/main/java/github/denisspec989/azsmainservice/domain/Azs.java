@@ -29,7 +29,7 @@ public class Azs {
             strategy = "org.hibernate.id.UUIDGenerator"
     )
     private UUID azs_id;
-    private String      azsId_company;
+    private String azsCompanyId;
     private Double      latitude;
     private Double      longitude;
     private String      telephone;
@@ -43,11 +43,11 @@ public class Azs {
         Azs azs = (Azs) o;
         azs.setTelephone(azs.getTelephone()!=null?azs.getTelephone().equals("")?null:azs.getTelephone():null);
         this.telephone=getTelephone()!=null?getTelephone().equals("")?null:getTelephone():null;
-        return Objects.equals(getAzsId_company(), azs.getAzsId_company()) && Objects.equals(getLatitude(), azs.getLatitude()) && Objects.equals(getLongitude(), azs.getLongitude()) && Objects.equals(getTelephone(), azs.getTelephone()) && Objects.equals(getAzsName(), azs.getAzsName()) && Objects.equals(getAzsAddress(), azs.getAzsAddress());
+        return Objects.equals(getAzsCompanyId(), azs.getAzsCompanyId()) && Objects.equals(getLatitude(), azs.getLatitude()) && Objects.equals(getLongitude(), azs.getLongitude()) && Objects.equals(getTelephone(), azs.getTelephone()) && Objects.equals(getAzsName(), azs.getAzsName()) && Objects.equals(getAzsAddress(), azs.getAzsAddress());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getAzsId_company(), getLatitude(), getLongitude(), getTelephone(), getAzsName(), getAzsAddress());
+        return Objects.hash(getAzsCompanyId(), getLatitude(), getLongitude(), getTelephone(), getAzsName(), getAzsAddress());
     }
 }
