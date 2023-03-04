@@ -10,6 +10,6 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 public class PriceModelDto {
-    private Float fuelPrice;
+    private Double fuelPrice;
     private String fuelName;
 }
