@@ -7,12 +7,14 @@ import github.denisspec989.azsmainservice.repository.feign.FileServiceRepository
 import github.denisspec989.azsmainservice.repository.jpa.AzsRepository;
 import github.denisspec989.azsmainservice.service.AzsMainService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 @Service
 @RequiredArgsConstructor
@@ -63,9 +65,14 @@ public class AzsMainServiceImpl implements AzsMainService {
     @Transactional
     public void scheduledGetNewAises() {
         System.out.println("start scheduling");
-        List<Azs> savingList = fromPetrolStationDtoListToAzsEntityList(fileServiceRepository.getJsonData("Azs_with_prices_and_services"));
-        System.out.println(savingList.size());
-        List<Azs> xmlList = fromPetrolStationDtoListToAzsEntityList(fileServiceRepository.getXmlData("Azs_with_prices_and_services"));
+        ResponseEntity<List<PetrolStationDto>> responseJson;
+        ResponseEntity<List<PetrolStationDto>> responseXML;
+        do {
+           responseJson = fileServiceRepository.getJsonData("Azs_with_prices_and_services");
+           responseXML=fileServiceRepository.getXmlData("Azs_with_prices_and_services");
+        } while (!(responseJson.getStatusCode().value()==200&&responseXML.getStatusCode().value()==200));
+        List<Azs> savingList=fromPetrolStationDtoListToAzsEntityList(responseJson.getBody());
+        List<Azs> xmlList=fromPetrolStationDtoListToAzsEntityList(responseXML.getBody());
         for(Azs azs:xmlList){
             if(savingList.contains(azs)){
                 continue;
